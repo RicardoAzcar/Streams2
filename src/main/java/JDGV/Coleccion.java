@@ -30,7 +30,7 @@ public class Coleccion {
                 .filter(x->x<2.0f)
                 .collect(Collectors.toList())
                 .size();
-        System.out.println("\nCursos con duracion mayor a 2 horas = " + durations);
+        System.out.println("\nCursos con duracion menor a 2 horas = " + durations);
 
         //Listar el título de todos aquellos cursos con una cantidad de vídeos mayor a 50.
         List<String> tituloVideos = cursos.stream()
@@ -44,28 +44,27 @@ public class Coleccion {
         cursos.stream()
                 .sorted(Comparator.comparing(Curso::getDuracion))
                 .toList()
-                .subList(cursos.size()-3, cursos.size()).forEach(curso -> System.out.println(curso.getTitulo()));
-
+                .subList(cursos.size()-3, cursos.size()).
+                forEach(curso -> System.out.println(curso.getTitulo()));
 
         //Mostrar en consola la duración total de todos los cursos.
-        IntSummaryStatistics stats = cursos.stream()
+        DoubleSummaryStatistics stats = cursos.stream()
                 .map(Curso::getDuracion)
-                .mapToInt((x)-> x.intValue())
+                .mapToDouble((x)-> x)
                 .summaryStatistics();
         System.out.println("\nDuracion total de los cursos: " + stats.getSum());
 
         //Mostrar en consola todos aquellos cursos que superen el promedio en cuanto a duración se refiere.
-        System.out.println("Cursos que superan la duracion promedio");
+        System.out.println("\nCursos que superan la duracion promedio");
         cursos.stream()
                 .filter(curso -> curso.getDuracion() > stats.getAverage())
-                .collect(Collectors.toList())
                 .forEach(curso -> System.out.println(curso.getTitulo()));
 
 
 
         //Mostrar en consola la duración de todos aquellos cursos que tengan una cantidad de alumnos inscritos menor a 500.
         List<Float> duracionInscritos = cursos.stream()
-                .filter(Curso->Curso.getAlumnos()>500)
+                .filter(Curso->Curso.getAlumnos()<500)
                 .map(Curso::getDuracion)
                 .toList();
         System.out.println("\nDuracion de cursos con mas de 500 alumnos:\n" + duracionInscritos);
@@ -83,7 +82,6 @@ public class Coleccion {
         //Crear una lista de Strings con todos los titulos de los cursos
         List<String> listaTitulos = cursos.stream()
                 .map(Curso::getTitulo)
-                .distinct()
                 .collect(Collectors.toList());
         System.out.println("\nLista de los titulos de los cursos:\n"+listaTitulos);
 
